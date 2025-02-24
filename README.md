@@ -1,4 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Scheduling System
+
+A calendar booking system that allows users to schedule appointments based on availability.
+
+## Setup
+
+1. Environment Variables
+   Create a `.env.local` file with:
+   ```
+   CALENDAR_ID=your-calendar-id@domain.com
+   TIMEZONE=Asia/Singapore
+   SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
+   ```
+
+2. Google Calendar Setup
+   - Share the calendar with the service account email
+   - Give "Make changes to events" permission
+   - Place the service account JSON file in `src/config/`
+
+3. Installation
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+## Development
+- Built with Next.js
+- Uses Google Calendar API
+- Styled with Tailwind CSS
 
 ## Getting Started
 
@@ -34,3 +62,30 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```
+smart_scheduling_system
+├─ README.md
+├─ eslint.config.mjs
+├─ next.config.ts
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ public
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ next.svg
+│  ├─ vercel.svg
+│  └─ window.svg
+├─ src
+│  ├─ app
+│  │  ├─ favicon.ico
+│  │  ├─ globals.css
+│  │  ├─ layout.tsx
+│  │  └─ page.tsx
+│  └─ config
+│     └─ infra-smile-397603-8ed78d6963ee.json
+├─ tailwind.config.ts
+└─ tsconfig.json
+
+```
