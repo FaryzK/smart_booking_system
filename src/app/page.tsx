@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { TimeSlot, AppointmentFormData, ApiResponse } from '@/types/appointment';
-import Image from "next/image";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 function formatTimeSlot(date: string) {
   return new Date(date).toLocaleTimeString('en-SG', {
@@ -13,26 +14,39 @@ function formatTimeSlot(date: string) {
   });
 }
 
+// Business hours configuration
+const BUSINESS_HOURS = {
+  start: 9, // 9 AM
+  end: 18,  // 6 PM
+  days: [1, 2, 3, 4, 5], // Monday = 1, Friday = 5
+};
+
 export default function Home() {
   const [slots, setSlots] = useState<TimeSlot[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Group slots by date for the dropdown
-  const availableDates = [...new Set(slots.map(slot => 
-    new Date(slot.start).toLocaleDateString()
-  ))];
-
   // Filter time slots for selected date
   const availableTimesForDate = slots.filter(slot => 
-    new Date(slot.start).toLocaleDateString() === selectedDate
+    selectedDate && 
+    new Date(slot.start).toLocaleDateString() === selectedDate.toLocaleDateString()
   );
 
   useEffect(() => {
     fetchAvailableSlots();
   }, []);
+
+  // Filter out weekends and past dates
+  const filterAvailableDates = (date: Date) => {
+    const day = date.getDay();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Allow only weekdays (Monday = 1, Friday = 5) and dates from today
+    return BUSINESS_HOURS.days.includes(day) && date >= today;
+  };
 
   const fetchAvailableSlots = async () => {
     try {
@@ -75,7 +89,7 @@ export default function Home() {
       if (response.ok) {
         alert('Appointment booked successfully!');
         setSelectedSlot(null);
-        setSelectedDate('');
+        setSelectedDate(null);
         fetchAvailableSlots(); // Refresh slots
       } else {
         setError(data.error || 'Failed to book appointment');
@@ -111,22 +125,22 @@ export default function Home() {
             <label className="block text-sm font-medium text-gray-700">
               Select Date
             </label>
-            <select
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              value={selectedDate}
-              onChange={(e) => {
-                setSelectedDate(e.target.value);
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date: Date) => {
+                setSelectedDate(date);
                 setSelectedSlot(null);
               }}
-            >
-              <option value="">Choose a date</option>
-              {availableDates.map(date => (
-                <option key={date} value={date}>{date}</option>
-              ))}
-            </select>
+              filterDate={filterAvailableDates}
+              minDate={new Date()}
+              maxDate={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)} // 1 year from now
+              dateFormat="MMMM d, yyyy"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              placeholderText="Choose a date"
+            />
           </div>
 
-          {/* Time Selection - Changed from grid to dropdown */}
+          {/* Time Selection */}
           {selectedDate && (
             <div>
               <label className="block text-sm font-medium text-gray-700">

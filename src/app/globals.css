@@ -4,6 +4,33 @@
 
 /* Add any custom styles here */
 
+/* DatePicker customization */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: Arial, sans-serif;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.react-datepicker__header {
+  background-color: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.react-datepicker__day--selected {
+  background-color: #3b82f6 !important;
+  border-radius: 0.25rem;
+}
+
+.react-datepicker__day--disabled {
+  color: #9ca3af;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

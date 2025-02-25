@@ -26,14 +26,14 @@ export async function GET() {
   try {
     const calendar = getCalendarClient();
     
-    // Get time window for next 7 days
+    // Get time window for next year
     const startTime = new Date();
     startTime.setMinutes(30 * Math.floor(startTime.getMinutes() / 30));
     startTime.setSeconds(0);
     startTime.setMilliseconds(0);
 
     const endTime = new Date();
-    endTime.setDate(endTime.getDate() + 7);
+    endTime.setDate(endTime.getDate() + 365); // Changed from 7 to 365 days
     endTime.setHours(BUSINESS_HOURS.end, 0, 0, 0);
 
     const freebusyResponse = await calendar.freebusy.query({
