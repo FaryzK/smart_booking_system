@@ -5,9 +5,9 @@ import { AppointmentFormData } from '@/types/appointment';
 export async function POST(request: NextRequest) {
   try {
     const data: AppointmentFormData = await request.json();
-    const { name, email, phone, start, end } = data;
+    const { name, email, phone, service, start, end } = data;
 
-    if (!name || !email || !phone || !start || !end) {
+    if (!name || !email || !phone || !service || !start || !end) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -17,8 +17,10 @@ export async function POST(request: NextRequest) {
     const calendar = getCalendarClient();
 
     const event = {
-      summary: `Appointment with ${name}`,
-      description: `Contact: ${phone}\nEmail: ${email}`,
+      summary: `${service} - Appointment with ${name}`,
+      description: `Service: ${service}\nContact: ${phone}\nEmail: ${email}${
+        data.message ? `\nMessage: ${data.message}` : ''
+      }`,
       start: {
         dateTime: start,
         timeZone: TIMEZONE,

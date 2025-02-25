@@ -48,3 +48,20 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Update the select styling */
+select {
+  color: #171717; /* Default text color (black) */
+}
+
+select.placeholder {
+  color: #9CA3AF; /* Grey color for placeholder state */
+}
+
+select option {
+  color: #171717; /* Black color for all options */
+}
+
+select option[value=""] {
+  color: #9CA3AF; /* Grey color for placeholder option */
+}
